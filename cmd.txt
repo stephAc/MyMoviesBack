@@ -1,0 +1,10 @@
+npm install -g npm //to update npm
+npm init
+npm install
+npm install express --save
+npm install -g nodemon      //rs to restart, g for global or else --save-dev, dev because it's not an obligation
+Postman //to test Post Put and Delete without front
+npm install body-parser --save
+npm install mongoose --save
+
+geoJson // for dealing with geographic data
