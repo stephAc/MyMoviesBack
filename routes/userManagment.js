@@ -6,7 +6,7 @@ router.post('/login', (req, res, next) => {
   User.find({ name: req.body.logName, pwd: req.body.logPwd }).then(result => {
     if (result.length) {
       console.log('trouve');
-      res.send();
+      res.json(result[0]);
     } else {
       console.log('rien');
     }
