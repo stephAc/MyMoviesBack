@@ -15,6 +15,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'pwd field is required'],
   },
+  towatch: [],
 });
 
 //Creation of the user model
