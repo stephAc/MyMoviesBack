@@ -8,9 +8,17 @@ const cors = require('cors');
 
 //Connect to mongoDB, if dosen't exist it will create it
 // mongoose.connect('mongodb://localhost/mymovies');
-mongoose.connect('mongodb://:@ds241664.mlab.com:41664/mymoviesreact', {
-  useNewUrlParser: true,
-});
+mongoose
+  .connect('mongodb://:@ds241664.mlab.com:41664/mymoviesreact', {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log('Data base is connected');
+  })
+  .catch(err => {
+    console.error('App starting error:', err.stack);
+    process.exit(1);
+  });
 //Overwhrite because Mongo Promise is deprecated
 mongoose.Promise = global.Promise;
 

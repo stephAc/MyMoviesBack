@@ -2,12 +2,30 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 
+router.get('/towatchuserfilm/:id', (req, res, next) => {
+  User.findOne({ _id: req.params.id }).then(user => {
+    console.log(user.towatch);
+    res.send(JSON.stringify(user.towatch));
+  });
+});
+
 router.put('/addfilm', (req, res, next) => {
   console.log(req.body);
-  // User.findOneByIdAndUpdate({ _id: req.params.id }, req.body).then(() => {
-  //   User.findOne({ _id: req.params.id }).then(user => {
-  //     res.send(user);
-  //   });
+  User.findOneAndUpdate(
+    { _id: req.body.idUser },
+    { $push: { towatch: req.body.idFilm } },
+  ).then(user => {
+    console.log('old ' + user);
+    User.findOne({ _id: req.body.idUser }).then(user => {
+      console.log(user);
+    });
+  });
+  // User.update(
+  //   { _id: req.body.idUser },
+  //   { $push: { towatch: req.body.idFilm } },
+  // );
+  // User.findOne({ _id: req.body.idUser }).then(user => {
+  //   console.log(user);
   // });
 });
 
