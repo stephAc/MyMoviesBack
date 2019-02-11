@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const userManagment = require('./routes/userManagment');
+const userFilmManagement = require('./routes/userFilmManagment');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -19,6 +20,7 @@ app.use(cors());
 
 //Routes
 app.use(userManagment);
+app.use(userFilmManagement);
 
 //Error handling
 app.use((err, req, res, next) => {
