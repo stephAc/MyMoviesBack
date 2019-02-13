@@ -35,6 +35,18 @@ router.post('/mymovies/inscription', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/confirmuser', (req, res, next) => {
+  console.log(req.body.id + ' ' + req.body.mdp);
+  User.find({ _id: req.body.id, pwd: req.body.mdp }).then(user => {
+    if (user.length) {
+      console.log('trouve');
+      res.json(1);
+    } else {
+      console.log('rien');
+    }
+  });
+});
+
 router.put('/updateuser/:id', (req, res) => {
   User.findByIdAndUpdate({ _id: req.params.id }, req.body).then(() => {
     User.findOne({ _id: req.params.id }).then(user => {
@@ -45,7 +57,7 @@ router.put('/updateuser/:id', (req, res) => {
 
 router.delete('/deleteuser/:id', (req, res) => {
   User.findByIdAndRemove({ _id: req.params.id }).then(user => {
-    res.end();
+    res.send();
   });
 });
 
