@@ -44,14 +44,15 @@ router.post('/mymovies/inscription', (req, res, next) => {
 });
 
 router.post('/confirmuser', (req, res, next) => {
-  console.log(req.body.id + ' ' + req.body.mdp);
-  User.find({ _id: req.body.id, pwd: req.body.mdp }).then(user => {
-    if (user.length) {
-      console.log('trouve');
-      res.json(1);
-    } else {
-      console.log('rien');
-    }
+  User.findOne({ _id: req.body.id }).then(user => {
+    bcrypt.compare(req.body.mdp, user.pwd).then(result => {
+      if (result) {
+        console.log('trouve');
+        res.json(1);
+      } else {
+        console.log('rien');
+      }
+    });
   });
 });
 
