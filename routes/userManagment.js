@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 router.get('/userinfo/:id', (req, res, next) => {
-  console.log(req.params.id);
   User.findOne({ _id: req.params.id }).then(user => {
     console.log([user.name, user.email]);
     res.json([user.name, user.email]);
@@ -11,28 +12,35 @@ router.get('/userinfo/:id', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  User.find({ name: req.body.logName, pwd: req.body.logPwd }).then(result => {
-    if (result.length) {
-      console.log('trouve');
-      console.log([result[0].name, result[0]._id]);
-      res.json([result[0].name, result[0]._id]);
-    } else {
-      console.log('rien');
-    }
+  User.findOne({ name: req.body.logName }).then(user => {
+    bcrypt.compare(req.body.logPwd, user.pwd).then(result => {
+      if (result) {
+        console.log('trouve');
+        console.log([user.name, user._id]);
+        res.json([user.name, user._id]);
+      } else {
+        console.log('rien');
+      }
+    });
   });
 });
 
 //Add new member
 router.post('/mymovies/inscription', (req, res, next) => {
-  // var user = new User(req.body);
-  // user.save();
-  //Is Like
-  User.create(req.body)
-    .then(user => {
-      console.log(user);
-      res.send();
+  bcrypt
+    .hash(req.body.pwd, saltRounds, (err, hash) => {
+      User.create({
+        name: req.body.name,
+        email: req.body.email,
+        pwd: hash,
+      })
+        .then(user => {
+          console.log(user);
+          res.send();
+        })
+        .catch(next);
     })
-    .catch(next);
+    .catch(err);
 });
 
 router.post('/confirmuser', (req, res, next) => {

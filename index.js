@@ -9,8 +9,6 @@ const cors = require('cors');
 
 //Connect to mongoDB, if dosen't exist it will create it
 // mongoose.connect('mongodb://localhost/mymovies');
-
-console.log(process.env.DB_USER);
 mongoose
   .connect(process.env.DB, {
     useNewUrlParser: true,
