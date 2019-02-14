@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+require('dotenv/config');
 const userManagment = require('./routes/userManagment');
 const userFilmManagement = require('./routes/userFilmManagment');
 const mongoose = require('mongoose');
@@ -8,8 +9,10 @@ const cors = require('cors');
 
 //Connect to mongoDB, if dosen't exist it will create it
 // mongoose.connect('mongodb://localhost/mymovies');
+
+console.log(process.env.DB_USER);
 mongoose
-  .connect('mongodb://:@ds241664.mlab.com:41664/mymoviesreact', {
+  .connect(process.env.DB, {
     useNewUrlParser: true,
   })
   .then(() => {
