@@ -16,7 +16,20 @@ router.post('/login', (req, res, next) => {
     bcrypt.compare(req.body.logPwd, user.pwd).then(result => {
       if (result) {
         console.log('trouve');
-        console.log([user.name, user._id]);
+        res.json([user.name, user._id]);
+      } else {
+        console.log('rien');
+      }
+    });
+  });
+});
+
+router.post('/autoconnexion', (req, res, next) => {
+  console.log('name: req.body.name' + req.body.pwd);
+  User.findOne({ name: req.body.name }).then(user => {
+    bcrypt.compare(req.body.pwd, user.pwd).then(result => {
+      if (result) {
+        console.log('trouve');
         res.json([user.name, user._id]);
       } else {
         console.log('rien');
@@ -35,8 +48,7 @@ router.post('/mymovies/inscription', (req, res, next) => {
         pwd: hash,
       })
         .then(user => {
-          console.log(user);
-          res.send();
+          res.send([user.name, user._id]);
         })
         .catch(next);
     })

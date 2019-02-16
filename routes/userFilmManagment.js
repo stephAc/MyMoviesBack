@@ -17,16 +17,9 @@ router.put('/addfilm', (req, res, next) => {
   ).then(user => {
     console.log('old ' + user);
     User.findOne({ _id: req.body.idUser }).then(user => {
-      console.log(user);
+      console.log(user.towatch);
     });
   });
-  // User.update(
-  //   { _id: req.body.idUser },
-  //   { $push: { towatch: req.body.idFilm } },
-  // );
-  // User.findOne({ _id: req.body.idUser }).then(user => {
-  //   console.log(user);
-  // });
 });
 
 module.exports = router;
