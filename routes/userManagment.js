@@ -12,20 +12,23 @@ router.get('/userinfo/:id', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  User.findOne({ name: req.body.logName }).then(user => {
-    bcrypt.compare(req.body.logPwd, user.pwd).then(result => {
-      if (result) {
-        console.log('trouve');
-        res.json([user.name, user._id]);
-      } else {
-        console.log('rien');
-      }
+  User.findOne({ name: req.body.logName })
+    .then(user => {
+      bcrypt.compare(req.body.logPwd, user.pwd).then(result => {
+        if (result) {
+          console.log('trouve');
+          res.json([user.name, user._id]);
+        } else {
+          res.json(0);
+        }
+      });
+    })
+    .catch(() => {
+      res.json(0);
     });
-  });
 });
 
 router.post('/autoconnexion', (req, res, next) => {
-  console.log('name: req.body.name' + req.body.pwd);
   User.findOne({ name: req.body.name }).then(user => {
     bcrypt.compare(req.body.pwd, user.pwd).then(result => {
       if (result) {
@@ -40,19 +43,27 @@ router.post('/autoconnexion', (req, res, next) => {
 
 //Add new member
 router.post('/mymovies/inscription', (req, res, next) => {
-  bcrypt
-    .hash(req.body.pwd, saltRounds, (err, hash) => {
-      User.create({
-        name: req.body.name,
-        email: req.body.email,
-        pwd: hash,
-      })
-        .then(user => {
-          res.send([user.name, user._id]);
+  User.findOne({ name: req.body.name }).then(result => {
+    if (!result) {
+      console.log('existe pas');
+      bcrypt
+        .hash(req.body.pwd, saltRounds, (err, hash) => {
+          User.create({
+            name: req.body.name,
+            email: req.body.email,
+            pwd: hash,
+          })
+            .then(user => {
+              res.send([user.name, user._id]);
+            })
+            .catch(next);
         })
-        .catch(next);
-    })
-    .catch(err);
+        .catch(err);
+    } else {
+      console.log('existe');
+      res.json(0);
+    }
+  });
 });
 
 router.post('/confirmuser', (req, res, next) => {
