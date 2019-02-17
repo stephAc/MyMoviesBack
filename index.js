@@ -23,6 +23,9 @@ mongoose
 //Overwhrite because Mongo Promise is deprecated
 mongoose.Promise = global.Promise;
 
+//static files
+app.use(express.static('public'));
+
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -43,11 +46,3 @@ const port = process.env.port || 4000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
-
-/* exemple
-app.get('/', (req, res) => {
-  console.log('get');
-  res.end();  End the request
-  res.send({ name: 'Yoshi' }); //Send data
-});
-*/
